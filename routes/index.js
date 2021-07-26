@@ -19,23 +19,28 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/data', function(req, res, next) {
-    sql.connect(db, function (err) {
-    
-        if (err) console.log(err);
+    try {
+        sql.connect(db, function (err) {
+        
+            if (err) console.log(err);
 
-        // create Request object
-        var request = new sql.Request();
-           
-        // query to the database and get the records
-        request.query('EXEC [GetHurricaneDataFlorida]', function (err, recordset) {
+            // create Request object
+            var request = new sql.Request();
             
-            if (err) console.log(err)
+            // query to the database and get the records
+            request.query('EXEC [GetHurricaneDataFlorida]', function (err, recordset) {
+                
+                if (err) console.log(err)
 
-            // send records as a response
-            res.send(recordset.recordset[0]);
-            
+                // send records as a response
+                res.send(recordset.recordset[0]);
+                
+            });
         });
-    });
+    }
+    catch(e) {
+        console.log(e)
+    }
 });
 
 
